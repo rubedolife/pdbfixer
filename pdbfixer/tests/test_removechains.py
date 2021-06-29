@@ -1,5 +1,5 @@
 from nose.tools import ok_, eq_, raises, assert_list_equal
-import simtk.openmm.app as app
+import openmm.app as app
 import pdbfixer
 import tempfile
 import time
@@ -13,9 +13,12 @@ except:
 
 # Download the file once to avoid repeated requests to the PDB.
 
-file_content = urlopen('http://www.rcsb.org/pdb/files/4JSV.pdb').read().decode('utf-8')
+file_content = urlopen('http://www.rcsb.org/pdb/files/4JSV.pdb').read().decode(
+    'utf-8')
 
-def remove_chain_ids_and_verify(chain_ids_to_remove, expected_chain_ids_remaining):
+
+def remove_chain_ids_and_verify(chain_ids_to_remove,
+                                expected_chain_ids_remaining):
     # Create a PDBFixer instance for the given pdbid
     fixer = pdbfixer.PDBFixer(pdbfile=StringIO(file_content))
     # Remove specified chains.
@@ -24,6 +27,7 @@ def remove_chain_ids_and_verify(chain_ids_to_remove, expected_chain_ids_remainin
     chain_ids_remaining = [c.id for c in fixer.topology.chains()]
     assert_list_equal(chain_ids_remaining, expected_chain_ids_remaining)
 
+
 def test_removechain_ids():
     remove_chain_ids_and_verify([], ['B', 'D', 'A', 'C', 'B', 'A'])
     remove_chain_ids_and_verify(['B', 'D'], ['A', 'C', 'A'])
@@ -31,7 +35,9 @@ def test_removechain_ids():
     remove_chain_ids_and_verify(['B', 'A'], ['D', 'C'])
     remove_chain_ids_and_verify(['B', 'D', 'A', 'C'], [])
 
-def remove_chain_indices_and_verify(chain_indices_to_remove, expected_chain_ids_remaining):
+
+def remove_chain_indices_and_verify(chain_indices_to_remove,
+                                    expected_chain_ids_remaining):
     # Create a PDBFixer instance for the given pdbid
     fixer = pdbfixer.PDBFixer(pdbfile=StringIO(file_content))
     # Remove specified chains.
@@ -39,6 +45,7 @@ def remove_chain_indices_and_verify(chain_indices_to_remove, expected_chain_ids_
     # Check to make sure asserted chains remain.
     chain_ids_remaining = [c.id for c in fixer.topology.chains()]
     assert_list_equal(chain_ids_remaining, expected_chain_ids_remaining)
+
 
 def test_removechain_indices():
     remove_chain_indices_and_verify([], ['B', 'D', 'A', 'C', 'B', 'A'])
