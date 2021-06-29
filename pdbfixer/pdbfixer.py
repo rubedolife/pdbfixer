@@ -44,7 +44,7 @@ from openmm.app.forcefield import NonbondedGenerator
 # Support Cythonized functions in OpenMM 7.3
 # and also implementations in older versions.
 try:
-    from openmm.openmm.app.internal import compiled
+    from openmm.app.internal import compiled
     matchResidue = compiled.matchResidueToTemplate
 except ImportError:
     matchResidue = app.forcefield._matchResidue
